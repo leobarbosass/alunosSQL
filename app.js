@@ -16,7 +16,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const req = require('express/lib/request')
+const {MESSAGE_ERROR, MESSAGE_SUCCESS} = require('./modulo/config.js')
 
 const app = express()
    
@@ -48,7 +48,7 @@ app.get('/alunos', cors(), async function (request, response){
         message = dadosAlunos
     }else{
         statusCode = 404
-        message = "Nenhum aluno encontrado"
+        message = MESSAGE_ERROR.NOT_FOUND_DB
     }
     //APARECER NO TERMINAL
     //console.log(message)
@@ -80,17 +80,17 @@ app.post('/aluno', cors(), jsonParser, async function(request, response){
             //chama a funcao novoAluno da controller e encaminha os dados do body
             const novoAluno = await controllerAluno.novoAluno(dadosBody)
 
-            if(novoAluno){
+            if(novoAluno == true){
                 statusCode = 201
-                message = 'item criado com sucesso'
+                message = MESSAGE_SUCCESS.INSERT_ITEM
             }else{
                 statusCode = 400
-                message = 'o item nao pode ser criado'
+                message = novoAluno
             }
 
         }else{
             statusCode = 400
-            message = 'Content-Type incorreto'
+            message = MESSAGE_ERROR.CONTENT_TYPE
         }
 
     }else{

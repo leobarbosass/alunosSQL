@@ -39,8 +39,8 @@ const selectAllAlunos = async function(aluno){
 
     const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
                                                         //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
-    const rsAlunos = await prisma.$queryRaw `select * from tbl_aluno` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
-
+    const rsAlunos = await prisma.$queryRaw `select cast(id as float) as id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento from tbl_aluno order by id desc` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+                                                                    //as é para trocar a coluna do ID
     if(rsAlunos.length > 0){
         return rsAlunos
     }

@@ -10,16 +10,17 @@ const MESSAGE_ERROR = {
     INVALID_EMAIL     : 'O e-mail informado nao é valido',
     CONTENT_TYPE      : 'O cabecalho nao possui um content-type válido!',
     EMPTY_BODY        : 'O body da requisicao nao pode estar vazio!',
-    NOT_FOUND_DB      : 'Nao foram encontrados registros no banco de dados'
+    NOT_FOUND_DB      : 'Nao foram encontrados registros no banco de dados',
+    INTERNAL_ERROR_DB : 'Não foi possivel realizar a operacao com o Banco de dados'
 }   
 
-const MESSAGE_SUCESS = {
+const MESSAGE_SUCCESS = {
     INSERT_ITEM       : 'Item criado com sucesso no Banco de Dados',
-    UPDATE_ITEM       : 'Item criado com sucesso no Banco de Dados',
-    DELETE_ITEM       : 'Item criado com sucesso no Banco de Dados',
+    UPDATE_ITEM       : 'Item atualizado com sucesso no Banco de Dados',
+    DELETE_ITEM       : 'Item deletado com sucesso no Banco de Dados',
 }
 
 module.exports = {
     MESSAGE_ERROR,
-    MESSAGE_SUCESS
+    MESSAGE_SUCCESS
 }
