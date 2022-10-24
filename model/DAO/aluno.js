@@ -49,7 +49,6 @@ const updateAluno = async function(aluno){
                                         celular =               '${aluno.celular}', 
                                         data_nascimento =       '${aluno.data_nascimento}' 
                                         where id =              '${aluno.id}'`
-        console.log(sql)
 
         //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
         const result = await prisma.$executeRawUnsafe (sql)
@@ -67,7 +66,27 @@ const updateAluno = async function(aluno){
 }
 
 const deleteAluno = async function(id){
+    try{
 
+        const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+
+        const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
+
+        let sql = `delete from tbl_aluno  where id = '${id}'`
+
+        //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
+        const result = await prisma.$executeRawUnsafe (sql)
+        
+        //verifica se o script foi executado com sucesso no BD
+        if(result){
+            return true
+        }else{
+            return false
+        }
+
+    } catch (error){
+        return false
+    }
 }
 
 const selectAllAlunos = async function(aluno){
@@ -90,5 +109,6 @@ const selectAllAlunos = async function(aluno){
 module.exports = {
     selectAllAlunos,
     insertAluno,
-    updateAluno
+    updateAluno,
+    deleteAluno
 }

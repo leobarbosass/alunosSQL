@@ -35,8 +35,6 @@ const novoAluno = async function(aluno){
 
 const atualizarAluno = async function(aluno){
 
-    console.log(aluno)
-
     if(aluno.id == '' || aluno.id == undefined){
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
     }else{
@@ -57,7 +55,7 @@ const atualizarAluno = async function(aluno){
         //chamar a funcao update (atualizar) na MODEL
         const atualizarAluno = require('../model/DAO/aluno.js')
         const result = await atualizarAluno.updateAluno(aluno)
-            
+
         if(result){
             return {status: 201, message: MESSAGE_SUCCESS.UPDATE_ITEM}
         }else{
@@ -69,7 +67,23 @@ const atualizarAluno = async function(aluno){
 
 const excluirAluno = async function(id){
 
+    if(id == '' || id == undefined){
+        return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
+    }else{
+
+        //chamar a funcao update (atualizar) na MODEL
+        const deletarAluno = require('../model/DAO/aluno.js')
+        const result = await deletarAluno.deleteAluno(id)
+
+
+        if(result){
+            return {status: 201, message: MESSAGE_SUCCESS.DELETE_ITEM}
+        }else{
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
+        }
+    }
 }
+
 
 const listarAluno = async function(){
     let dadosAlunosJSON = {}
@@ -95,5 +109,6 @@ const listarAluno = async function(){
 module.exports = {
     listarAluno,
     novoAluno,
-    atualizarAluno
+    atualizarAluno,
+    excluirAluno
 }
