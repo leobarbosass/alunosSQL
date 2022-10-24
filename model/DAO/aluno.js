@@ -104,11 +104,27 @@ const selectAllAlunos = async function(aluno){
     }
 }
 
-//console.log(selectAllAlunos())
+const selectByIdAluno = async function(id){
+    const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+
+    const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
+                                                        //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
+    let sql = `select cast(id as float) as id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento from tbl_aluno where id = ${id}` 
+
+    const rsAluno = await prisma.$queryRawUnsafe(sql) //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+                                                                    //as é para trocar a coluna do ID
+    if(rsAluno.length > 0){
+        return rsAluno
+    }
+    else{
+        return false
+    }
+}
 
 module.exports = {
     selectAllAlunos,
     insertAluno,
     updateAluno,
-    deleteAluno
+    deleteAluno,
+    selectByIdAluno
 }

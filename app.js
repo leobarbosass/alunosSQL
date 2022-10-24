@@ -59,6 +59,36 @@ app.get('/alunos', cors(), async function (request, response) {
 
 })
 
+app.get('/aluno/:id', cors(), async function (request, response) {
+
+    let statusCode
+    let message
+    let id = request.params.id
+
+    if (id != '' && id != undefined) {
+        //import do arquivo controllerAluno
+        const controllerAluno = require('./controller/controllerAluno.js')
+
+        //Retorna  todos os alunos existentes no BD
+        const dadosAluno = await controllerAluno.buscarAluno(id)
+
+        if (dadosAluno) {
+            statusCode = 200
+            message = dadosAluno
+        } else {
+            statusCode = 404
+            message = MESSAGE_ERROR.NOT_FOUND_DB
+        }
+    }else{
+        statusCode = 400
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+
+    response.status(statusCode)
+    response.json(message)
+
+})
+
 //EndPoint para inserir um novo aluno
 app.post('/aluno', cors(), jsonParser, async function (request, response) {
     let statusCode
