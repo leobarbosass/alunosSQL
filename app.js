@@ -80,22 +80,67 @@ app.post('/aluno', cors(), jsonParser, async function(request, response){
             //chama a funcao novoAluno da controller e encaminha os dados do body
             const novoAluno = await controllerAluno.novoAluno(dadosBody)
 
-            if(novoAluno == true){
-                statusCode = 201
-                message = MESSAGE_SUCCESS.INSERT_ITEM
-            }else{
-                statusCode = 400
-                message = novoAluno
-            }
+            statusCode = novoAluno.status
+            message = novoAluno.message
 
         }else{
             statusCode = 400
-            message = MESSAGE_ERROR.CONTENT_TYPE
+            message = MESSAGE_ERROR.EMPTY_BODY
         }
 
     }else{
         statusCode = 415
-        message = 'Tipo de midia nao suportado. Esta requisicao aceita apenas aplication/json'
+        message = MESSAGE_ERROR.CONTENT_TYPE
+    }
+    response.status(statusCode)
+    response.json(message)
+
+})
+
+//EndPoint para atualizar um novo aluno
+app.put('/aluno/:id', cors(), jsonParser, async function(request, response){
+    let statusCode
+    let message
+    let headerContentType
+
+    //recebe um tipo de content-type que foi enviado da requisicao
+    //application/json
+    headerContentType = request.headers['content-type']
+
+    //validar se o content-type é do tipo application/json
+    if(headerContentType == 'application/json'){
+        //recebe do corpo da mensagem o conteudo
+        let dadosBody = request.body
+
+        if(JSON.stringify(dadosBody) != '{}'){
+            //recebe o id enviado por parametro na requisicao
+            let id = request.params.id
+            
+            if(id != '' && id != undefined){
+
+                //adiciona o id no json que chegou no corpo da requisicao
+                dadosBody.id = id
+
+                //import do arquivo da controller
+                const controllerAluno = require('./controller/controllerAluno.js')
+                //chama a funcao atualizar da controller e encaminha os dados do body
+                const atualizarAluno = await controllerAluno.atualizarAluno(dadosBody)
+
+                statusCode = atualizarAluno.status
+                message = atualizarAluno.message
+            }else{
+                statusCode = 400
+                message = MESSAGE_ERROR.REQUIRED_ID
+            }
+
+        }else{
+            statusCode = 400
+            message = MESSAGE_ERROR.EMPTY_BODY
+        }
+
+    }else{
+        statusCode = 415
+        message = MESSAGE_ERROR.CONTENT_TYPE
     }
     response.status(statusCode)
     response.json(message)

@@ -11,13 +11,14 @@ const MESSAGE_ERROR = {
     CONTENT_TYPE      : 'O cabecalho nao possui um content-type válido!',
     EMPTY_BODY        : 'O body da requisicao nao pode estar vazio!',
     NOT_FOUND_DB      : 'Nao foram encontrados registros no banco de dados',
-    INTERNAL_ERROR_DB : 'Não foi possivel realizar a operacao com o Banco de dados'
+    INTERNAL_ERROR_DB : 'Não foi possivel realizar a operacao com o Banco de dados',
+    REQUIRED_ID       : 'Nao foi possivel encontrar o ID'
 }   
 
 const MESSAGE_SUCCESS = {
     INSERT_ITEM       : 'Item criado com sucesso no Banco de Dados',
     UPDATE_ITEM       : 'Item atualizado com sucesso no Banco de Dados',
-    DELETE_ITEM       : 'Item deletado com sucesso no Banco de Dados',
+    DELETE_ITEM       : 'Item deletado com sucesso no Banco de Dados'
 }
 
 module.exports = {
