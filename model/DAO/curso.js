@@ -8,7 +8,7 @@
 
 //Funcao para inserir um novo registro no Banco de dados
 
-const selectAllCursos = async function(curso) {
+const selectAllCursos = async function() {
     const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
     const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
