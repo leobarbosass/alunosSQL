@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OBJETIVO: Arquivo responsável pela manipulacao de dados com o Banco de Dados(Insert, Update, Select e Delete) //
 // AUTOR: Leonardo Barbosa Santos                                                                                //
-// DATA: 27/10/2022                                                                                              //
-// VERSAO: 1.0                                                                                                   //
+// DATA: 31/10/2022                                                                                              //
+// VERSAO: 1.1                                                                                                   //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const { MESSAGE_ERROR, MESSAGE_SUCCESS } = require('../modulo/config.js')
