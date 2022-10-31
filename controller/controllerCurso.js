@@ -88,7 +88,6 @@ const excluirCurso = async function (id) {
             const deletarCurso = require('../model/DAO/curso.js')
             const result = await deletarCurso.deleteCurso(id)
 
-
             if (result) {
                 return { status: 201, message: MESSAGE_SUCCESS.DELETE_ITEM }
             } else {

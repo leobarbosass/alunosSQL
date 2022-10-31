@@ -79,8 +79,7 @@ const excluirAluno = async function (id) {
             //chamar a funcao update (atualizar) na MODEL
             const deletarAluno = require('../model/DAO/aluno.js')
             const result = await deletarAluno.deleteAluno(id)
-
-
+            
             if (result) {
                 return { status: 201, message: MESSAGE_SUCCESS.DELETE_ITEM }
             } else {

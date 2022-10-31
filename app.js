@@ -328,10 +328,10 @@ app.delete('/v1/curso/:id', cors(), jsonParser, async function (request, respons
 
 
         const controllerCurso = require('./controller/controllerCurso.js')
-        const excluirCurso = await controllerCurso.excluirCurso(id)
+        const curso = await controllerCurso.excluirCurso(id)
 
-        statusCode = excluirCurso.status
-        message = excluirCurso.message
+        statusCode = curso.status
+        message = curso.message
     } else {
         statusCode = 400
         message = MESSAGE_ERROR.REQUIRED_ID
@@ -341,6 +341,37 @@ app.delete('/v1/curso/:id', cors(), jsonParser, async function (request, respons
     response.json(message)
 
 })
+
+app.get('/v1/curso/:id', cors(), async function (request, response) {
+
+    let statusCode
+    let message
+    let id = request.params.id
+
+    if (id != '' && id != undefined) {
+        //import do arquivo controllerAluno
+        const controllerCurso = require('./controller/controllerCurso.js')
+
+        //Retorna  todos os alunos existentes no BD
+        const dadosCurso = await controllerCurso.buscarCurso(id)
+
+        if (dadosCurso) {
+            statusCode = 200
+            message = dadosCurso
+        } else {
+            statusCode = 404
+            message = MESSAGE_ERROR.NOT_FOUND_DB
+        }
+    }else{
+        statusCode = 400
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+
+    response.status(statusCode)
+    response.json(message)
+
+})
+
 
 //ativa o servidor para receber requisicoes http
 app.listen(8080, function () {

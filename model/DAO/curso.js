@@ -61,7 +61,6 @@ const updateCurso = async function(curso) {
                                         sigla =                 '${curso.sigla}' where id = ${curso.id}`
 
         const result = await prisma.$executeRawUnsafe (sql)
-            console.log(sql);
         if(result){
             return true
         }else{
@@ -74,14 +73,14 @@ const updateCurso = async function(curso) {
     }
 }
 
-const deleteCurso = async function(curso) {
+const deleteCurso = async function(id) {
     try{
 
         const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
         const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
 
-        let sql = `delete from tbl_curso  where id = '${id}'`
+        let sql = `delete from tbl_curso where id = '${id}'`
 
         //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
         const result = await prisma.$executeRawUnsafe (sql)
@@ -104,7 +103,6 @@ const selectByIdCurso = async function(id) {
     const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
                                                         //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
     let sql = `select cast(id as float) as id, nome, carga_horaria, icone, sigla from tbl_curso where id = ${id}` 
-    console.log(sql)
     const rsCurso = await prisma.$queryRawUnsafe(sql) //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
                                                                     //as é para trocar a coluna do ID
     if(rsCurso.length > 0){
