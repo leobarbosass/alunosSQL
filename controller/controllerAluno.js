@@ -22,7 +22,19 @@ const novoAluno = async function (aluno) {
 
         //chamar a funcao insert criada na MODEL
         const novoAluno = require('../model/DAO/aluno.js')
-        const result = await novoAluno.insertAluno(aluno)
+
+        //chama a funcao para inserir um novo aluno
+        const resultNovoAluno = await novoAluno.insertAluno(aluno)
+
+        //verifica se os dados do novo aluno foi inserido no BD
+        if(resultNovoAluno){
+            //chama a funcao que verifica qual o id gerado para o novo aluno
+            let idNovoAluno = await novoAluno.selectLastId()
+            
+            if(idNovoAluno > 0){
+
+            }
+        }
 
         if (result) {
             return { status: 201, message: MESSAGE_SUCCESS.INSERT_ITEM }
@@ -117,24 +129,35 @@ const buscarAluno = async function (id) {
     let dadosAlunosJSON = {}
 
     if (id == '' || id == undefined) {
-        return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID }
+        return { status: 400, message: MESSAGE_ERROR.REQUIRE_ID }
     } else {
 
+        //Import das models aluno e alunoCurso
         const { selectByIdAluno } = require('../model/DAO/aluno.js')
+        const {selectAlunoCurso} = require ('../model/DAO/aluno_curso.js')
 
-        const dadosAlunos = await selectByIdAluno(id)
+        const dadosAluno = await selectByIdAluno(id)
 
-        if (dadosAlunos) {
-            //Conversao do tipo de dados BigInt para int ???????
-            // dadosAlunos.reverse().forEach(element => {
-            //  element.id = Number(element.id)
-            //})
+        if (dadosAluno) {
+
+            const dadosAlunoCurso = await selectAlunoCurso(id)
+
+            if(dadosAlunoCurso){
 
             //Criamos uma chave alunos no jSON para retornar o array de alunos
-            dadosAlunosJSON.alunos = dadosAlunos
+            dadosAluno[0].curso = dadosAlunoCurso
+
+            dadosAlunosJSON.aluno.curso = dadosAlunoCurso
 
             return dadosAlunosJSON
-        } else {
+            
+            }else{
+            dadosAlunosJSON.aluno.curso = dadosAlunoCurso
+
+            return dadosAlunosJSON
+        }
+        
+    } else {
             return false
         }
     }
