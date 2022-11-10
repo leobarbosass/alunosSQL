@@ -1,7 +1,7 @@
 /*********************************************************************
  * Objetivo: API responsável pela manipulacao de dados do Back-end
  *          (GET, POST, PUT, DELETE)
- * Autor: Marcel
+ * Autor: Leonardo Barbosa
  * Data Criacao: 10/10/2022
  * Versao: 1.0
  * 

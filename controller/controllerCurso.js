@@ -1,7 +1,7 @@
 /*********************************************************************
  * Objetivo: Arquivo responsável manipulacao de recebimento, 
  * tratamento e retorno de dados entre a API e a model
- * Autor: Marcel
+ * Autor: Leonardo Barbosa
  * Data Criacao: 31/10/2022
  * Versao: 1.0
  * 

@@ -1,7 +1,7 @@
 /*********************************************************************
  * Objetivo: Arquivo resposnsável pela manipulacao de dados com o BD 
  *      (insert, update, delete e select)
- * Autor: Marcel
+ * Autor: Leonardo Barbosa
  * Data Criacao: 06/10/2022
  * Versao: 1.0
  * 

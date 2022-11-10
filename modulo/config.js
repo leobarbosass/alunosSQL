@@ -1,6 +1,6 @@
 /**************************************************************************************************
  * Objetivo: Arquivo responsável pela configuracao de variaveis, constantes e mensagens do sistema, 
- * Autor: Marcel
+ * Autor: Leonardo Barbosa
  * Data Criacao: 13/10/2022
  * Versao: 1.0
  * 
