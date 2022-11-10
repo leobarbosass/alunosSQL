@@ -1,161 +1,206 @@
-/***************************
-Objetivo: arquivo responsvel pela manipulacao de dados com o BD (insert, update, delete, select)
-Autor: Antony Gabriel
-Data criacao: 06/10/22
-Versao:1.0
-***************************/
+/*********************************************************************
+ * Objetivo: Arquivo resposnsável pela manipulacao de dados com o BD 
+ *      (insert, update, delete e select)
+ * Autor: Marcel
+ * Data Criacao: 06/10/2022
+ * Versao: 1.0
+ * 
+ *********************************************************************/
 
-//Funcao para inserir um novo registro no Banco de dados
-const insertAluno = async function(aluno){
-    try{
+//Funcao para inserir um novo registro no BD
+const insertAluno = async function (aluno) {
+    try {
 
-        const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+        //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+        const { PrismaClient } = require('@prisma/client');
 
-        const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
+        //Instancia da classe PrismaClient
+        const prisma = new PrismaClient();
 
-        let sql = `insert into tbl_aluno (nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento)
-                values( '${aluno.nome}', '${aluno.foto}', '${aluno.sexo}', '${aluno.rg}', '${aluno.cpf}', '${aluno.email}', '${aluno.telefone}', '${aluno.celular}', '${aluno.data_nascimento}')`
-
-        //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
-        const result = await prisma.$executeRawUnsafe (sql)
+        let sql = `insert into tbl_aluno (nome, 
+                                        foto, 
+                                        rg, 
+                                        cpf, 
+                                        email, 
+                                        data_nascimento, 
+                                        telefone, 
+                                        celular, 
+                                        sexo)
+                                        values(
+                                            '${aluno.nome}',
+                                            '${aluno.foto}',
+                                            '${aluno.rg}',
+                                            '${aluno.cpf}',
+                                            '${aluno.email}',
+                                            '${aluno.data_nascimento}',
+                                            '${aluno.telefone}',
+                                            '${aluno.celular}',
+                                            '${aluno.sexo}'
+                                        )`;
         
-        //verifica se o script foi executado com sucesso no BD
-        if(result){
-            return true
-        }else{
-            return false
-        }
+        // Executa o script SQL no Banco de dados 
+        //($executeRawUnsafe permite encaminhar uma variavel contendo o script)
+        const result = await prisma.$executeRawUnsafe (sql);
 
-    } catch (error){
-        return false
+        //Verifica se o script foi executado com sucesso no BD
+        if (result)
+            return true;
+        else
+            return false;
+
+    } catch (error) {
+        return false;
     }
 }
 
-const updateAluno = async function(aluno){
-    try{
+//Funcao para atualizar um registro no BD
+const updateAluno = async function (aluno) {
+    try {
 
-        const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+        //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+        const { PrismaClient } = require('@prisma/client');
 
-        const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
+        //Instancia da classe PrismaClient
+        const prisma = new PrismaClient();
 
-        let sql = `update tbl_aluno set nome =                  '${aluno.nome}',
-                                        foto =                  '${aluno.foto}', 
-                                        sexo =                  '${aluno.sexo}', 
-                                        rg =                    '${aluno.rg}', 
-                                        cpf =                   '${aluno.cpf}', 
-                                        email =                 '${aluno.email}', 
-                                        telefone =              '${aluno.telefone}', 
-                                        celular =               '${aluno.celular}', 
-                                        data_nascimento =       '${aluno.data_nascimento}' 
-                                        where id =              '${aluno.id}'`
-        console.log(sql)
-
-        //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
-        const result = await prisma.$executeRawUnsafe (sql)
+        let sql = `update tbl_aluno set nome            = '${aluno.nome}', 
+                                        foto            = '${aluno.foto}', 
+                                        rg              = '${aluno.rg}', 
+                                        cpf             = '${aluno.cpf}', 
+                                        email           = '${aluno.email}', 
+                                        data_nascimento = '${aluno.data_nascimento}', 
+                                        telefone        = '${aluno.telefone}', 
+                                        celular         = '${aluno.celular}', 
+                                        sexo            = '${aluno.sexo}'
+                            where id = '${aluno.id}'
+                        `;
+       
         
-        //verifica se o script foi executado com sucesso no BD
-        if(result){
-            return true
-        }else{
-            return false
-        }
+        // Executa o script SQL no Banco de dados 
+        //($executeRawUnsafe permite encaminhar uma variavel contendo o script)
+        const result = await prisma.$executeRawUnsafe (sql);
 
-    } catch (error){
-        return false
+        //Verifica se o script foi executado com sucesso no BD
+        if (result)
+            return true;
+        else
+            return false;
+
+    } catch (error) {
+        return false;
     }
+
 }
 
-const selectAllAlunos = async function(aluno){
-    const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+//Funcao para excluir um registro no BD
+const deleteAluno = async function (id) {
+    try {
 
-    const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
-                                                        //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
-    const rsAlunos = await prisma.$queryRaw `select cast(id as float) as id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento from tbl_aluno order by id desc` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
-                                                                    //as é para trocar a coluna do ID
-    if(rsAlunos.length > 0){
-        return rsAlunos
-    }
-    else{
-        return false
-    }
-}
+        //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+        const { PrismaClient } = require('@prisma/client');
 
-const deleteAluno = async function(id){
-    try{
+        //Instancia da classe PrismaClient
+        const prisma = new PrismaClient();
 
-        const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+        let sql = `delete from tbl_aluno
+                            where id = '${id}'
+                        `;
+        // Executa o script SQL no Banco de dados 
+        //($executeRawUnsafe permite encaminhar uma variavel contendo o script)
+        const result = await prisma.$executeRawUnsafe (sql);
 
-        const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
-
-        let sql = `delete from tbl_aluno where id = '${id}'`
-        console.log(sql)
-
-        //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
-        const result = await prisma.$executeRawUnsafe (sql)
         
-        //verifica se o script foi executado com sucesso no BD
-        if(result){
-            return true
-        }else{
-            return false
-        }
+        //Verifica se o script foi executado com sucesso no BD
+        if (result)
+            return true;
+        else
+            return false;
 
-    } catch (error){
-        return false
+    } catch (error) {
+        return false;
     }
+
+
+
 }
 
-const selectByIdAluno = async function(id){
-    const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+//Funcao para retornar todos os registros do BD
+const selectAllAlunos = async function () {
 
-    const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
-                                          
-    let sql= `select cast(id as float) as id,
-    nome,
-    foto,
-    sexo,
-    rg,
-    cpf,
-    email,
-    telefone,
-    celular,
-    data_nascimento
-    from tbl_aluno where id = ${id}` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+    const { PrismaClient } = require('@prisma/client');
 
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
 
-    //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
-    //as é para trocar a coluna do ID
-    const rsAluno = await prisma.$queryRawUnsafe(sql)      
+    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //através do script SQL (select)
+    const rsAlunos = await prisma.$queryRaw `select cast(id as float) as id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento from tbl_aluno order by id desc`;
 
-    if(rsAluno.length > 0){
-        return rsAluno
-    }
-    else{
-        return false
-    }
+    if (rsAlunos.length > 0)
+        return rsAlunos;
+    else
+        return false;
+
 }
 
-const selectLastId = async function(){
-    const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
+//Funcao para retornar apenas o registro baseado no ID
+const selectByIdAluno = async function (id) {
 
-    const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
+    //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+    const { PrismaClient } = require('@prisma/client');
 
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
 
-    //Script para buscar o ultimo ID gerado no DB
-    let sql = `select cast(id as float) as id from tbl_aluno order by id desc limit 1;`
+    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //através do script SQL (select)
 
-    const rsAluno = await prisma.$queryRawUnsafe(sql)      
+    let sql = `select cast(id as float) as id, 
+                    nome, 
+                    foto, 
+                    sexo, 
+                    rg, 
+                    cpf, 
+                    email, 
+                    telefone, 
+                    celular, 
+                    data_nascimento 
+                from tbl_aluno 
+                where id = ${id}`
+    console.log(sql);
+    const rsAluno = await prisma.$queryRawUnsafe(sql) ;
 
-    if(rsAluno){
-        return rsAluno[0].id
-    }
-    else{
-        return false
-    }
+    if (rsAluno.length > 0)
+        return rsAluno;
+    else
+        return false;
+
 }
 
+//Funcao para retornar o ultimo ID gerado no BD
+const selectLastId = async function (){
+    //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+    const { PrismaClient } = require('@prisma/client');
 
-//console.log(selectAllAlunos())
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
+
+    //Script para buscar o ultimo ID gerado no BD
+    let sql = `select cast(id as float) as id 
+                    from tbl_aluno 
+                    order by id desc 
+                    limit 1;`;
+
+    const rsAluno = await prisma.$queryRawUnsafe(sql) ;
+   
+    if (rsAluno)
+        return rsAluno[0].id;
+    else
+        return false;
+        
+    
+}
 
 module.exports = {
     selectAllAlunos,
