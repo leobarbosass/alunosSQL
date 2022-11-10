@@ -1,24 +1,24 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OBJETIVO: Arquivo responsável pela configuracao de variaveis, constantes e mensagens do sistema, mensagem erro) //
-// AUTOR: Leonardo Barbosa Santos                                                                                  //
-// DATA: 13/10/2022                                                                                                //
-// VERSAO: 1.0                                                                                                     //
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/***************************
+Objetivo: arquivo responsvel pela configuracao de variaveis, constantes e mensagens do sistema)
+Autor: Antony Gabriel
+Data criacao: 13/10/22
+Versao:1.0
+***************************/
 
 const MESSAGE_ERROR = {
-    REQUIRED_FIELDS   : 'Existem campos obrigatorios que devem ser preenchidos',
-    INVALID_EMAIL     : 'O e-mail informado nao é valido',
-    CONTENT_TYPE      : 'O cabecalho nao possui um content-type válido!',
-    EMPTY_BODY        : 'O body da requisicao nao pode estar vazio!',
-    NOT_FOUND_DB      : 'Nao foram encontrados registros no banco de dados',
-    INTERNAL_ERROR_DB : 'Não foi possivel realizar a operacao com o Banco de dados',
-    REQUIRED_ID       : 'Nao foi possivel encontrar o ID'
-}   
+    REQUIRED_FIELDS     :  'Existe(m) campo(s) obrigatorio(s) nao preenchido(s)',
+    INVALID_EMAIL       :   'O e-mail informado nao é valido',
+    CONTENT_TYPE        :   'O cabecalho da requisicao nao possui um content-type valido!',
+    EMPTY_BODY          :   'O body da requisicao nao pode ser vazio',
+    NOT_FOUND_DB        :   'Nao foram encontrados registros no Bando de Dados',
+    INTERNAL_ERROR_DB   :   'Nao foi possivel realizar a operacao com o Banco de Dados',
+    REQUIRE_ID          :   'O ID do registro é obrigatorio neste tipo de requisicao'
+}
 
 const MESSAGE_SUCCESS = {
-    INSERT_ITEM       : 'Item criado com sucesso no Banco de Dados',
-    UPDATE_ITEM       : 'Item atualizado com sucesso no Banco de Dados',
-    DELETE_ITEM       : 'Item deletado com sucesso no Banco de Dados'
+    INSERT_ITEM         : 'Item criado com sucesso no Banco de Dados',
+    UPDATE_ITEM         : 'Item atualizado com sucesso no Banco de Dados',
+    DELETE_ITEM         : 'Item excluido com sucesso no Banco de Dados'
 }
 
 module.exports = {

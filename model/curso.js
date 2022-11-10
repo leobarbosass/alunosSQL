@@ -1,20 +1,20 @@
 /***************************
-Objetivo: arquivo responsvel pela manipulacao de dados com o BD (insert, update, delete, select)
+Objetivo: 
 Autor: Antony Gabriel
-Data criacao: 06/10/22
+Data criacao: 27/10/22
 Versao:1.0
 ***************************/
 
 //Funcao para inserir um novo registro no Banco de dados
-const insertAluno = async function(aluno){
+const insertCurso = async function(curso){
     try{
 
         const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
         const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
 
-        let sql = `insert into tbl_aluno (nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento)
-                values( '${aluno.nome}', '${aluno.foto}', '${aluno.sexo}', '${aluno.rg}', '${aluno.cpf}', '${aluno.email}', '${aluno.telefone}', '${aluno.celular}', '${aluno.data_nascimento}')`
+        let sql = `insert into tbl_curso (nome, carga_horaria, icone, sigla)
+                values('${curso.nome}', '${curso.carga_horaria}', '${curso.icone}', '${curso.sigla}')`
 
         //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
         const result = await prisma.$executeRawUnsafe (sql)
@@ -31,23 +31,18 @@ const insertAluno = async function(aluno){
     }
 }
 
-const updateAluno = async function(aluno){
+const updateCurso = async function(curso){
     try{
 
         const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
         const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
 
-        let sql = `update tbl_aluno set nome =                  '${aluno.nome}',
-                                        foto =                  '${aluno.foto}', 
-                                        sexo =                  '${aluno.sexo}', 
-                                        rg =                    '${aluno.rg}', 
-                                        cpf =                   '${aluno.cpf}', 
-                                        email =                 '${aluno.email}', 
-                                        telefone =              '${aluno.telefone}', 
-                                        celular =               '${aluno.celular}', 
-                                        data_nascimento =       '${aluno.data_nascimento}' 
-                                        where id =              '${aluno.id}'`
+        let sql = `update tbl_curso set nome =                  '${curso.nome}',
+                                        carga_horaria =         '${curso.carga_horaria}', 
+                                        icone =                  '${curso.icone}', 
+                                        sigla =                    '${curso.sigla}'
+                                        where id =              '${curso.id}'`
         console.log(sql)
 
         //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
@@ -65,29 +60,29 @@ const updateAluno = async function(aluno){
     }
 }
 
-const selectAllAlunos = async function(aluno){
+const selectAllCurso = async function(curso){
     const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
     const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
                                                         //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
-    const rsAlunos = await prisma.$queryRaw `select cast(id as float) as id, nome, foto, sexo, rg, cpf, email, telefone, celular, data_nascimento from tbl_aluno order by id desc` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    const rsCursos = await prisma.$queryRaw `select cast(id as float) as id, nome, carga_horaria, icone, sigla from tbl_curso order by id desc` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
                                                                     //as é para trocar a coluna do ID
-    if(rsAlunos.length > 0){
-        return rsAlunos
+    if(rsCursos.length > 0){
+        return rsCursos
     }
     else{
         return false
     }
 }
 
-const deleteAluno = async function(id){
+const deleteCurso = async function(id){
     try{
 
         const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
         const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
 
-        let sql = `delete from tbl_aluno where id = '${id}'`
+        let sql = `delete from tbl_curso where id = '${id}'`
         console.log(sql)
 
         //executa o script sql no banco de dados (.$executeRawUnsafe permite encaminhar uma variavel contendo o script)
@@ -105,63 +100,37 @@ const deleteAluno = async function(id){
     }
 }
 
-const selectByIdAluno = async function(id){
+const selectByIdCurso = async function(id){
     const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
 
     const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
                                           
     let sql= `select cast(id as float) as id,
     nome,
-    foto,
-    sexo,
-    rg,
-    cpf,
-    email,
-    telefone,
-    celular,
-    data_nascimento
-    from tbl_aluno where id = ${id}` //Cria um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    carga_horaria,
+    icone,
+    sigla
+    from tbl_curso where id = ${id}` //Cria um objeto do tipo RecordSet (rsCursos) para receber os dados do BD
 
 
     //order by para ordenar de acordo com crescente e drecrescente (nome, id, etc)
     //as é para trocar a coluna do ID
-    const rsAluno = await prisma.$queryRawUnsafe(sql)      
+    const rsCurso = await prisma.$queryRawUnsafe(sql)      
 
-    if(rsAluno.length > 0){
-        return rsAluno
+    if(rsCurso.length > 0){
+        return rsCurso
     }
     else{
         return false
     }
 }
-
-const selectLastId = async function(){
-    const { PrismaClient } = require('@prisma/client') //IMPORT DA CLASSE PrismaClient, que é responsavel pelas interacoes com o BD
-
-    const prisma = new PrismaClient() //INSTANCIA DA CLASSE PrismaClient
-
-
-    //Script para buscar o ultimo ID gerado no DB
-    let sql = `select cast(id as float) as id from tbl_aluno order by id desc limit 1;`
-
-    const rsAluno = await prisma.$queryRawUnsafe(sql)      
-
-    if(rsAluno){
-        return rsAluno[0].id
-    }
-    else{
-        return false
-    }
-}
-
 
 //console.log(selectAllAlunos())
 
 module.exports = {
-    selectAllAlunos,
-    insertAluno,
-    updateAluno,
-    deleteAluno,
-    selectByIdAluno,
-    selectLastId
+    selectAllCurso,
+    insertCurso,
+    updateCurso,
+    deleteCurso,
+    selectByIdCurso
 }

@@ -1,9 +1,10 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OBJETIVO: Arquivo responsável pela manipulacao de dados com o Banco de Dados(Insert, Update, Select e Delete) //
-// AUTOR: Leonardo Barbosa Santos                                                                                //
-// DATA: 31/10/2022                                                                                              //
-// VERSAO: 1.0                                                                                                   //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// OBJETIVO:l) //
+// AUTOR: Antony Gabriel                                                                                  //
+// DATA: 31/10/2022                                                                                                //
+// VERSAO: 1.0                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //Funcao para inserir um novo registro no BD
 const insertAlunoCurso = async function(alunoCurso){
@@ -48,8 +49,9 @@ const selectAlunoCurso = async function(idAluno){
                 on tbl_curso.id = tbl_aluno_curso.id_curso
         where tbl_aluno.id = ${idAluno};`
 
+        
         const rsAlunoCurso = await prisma.$queryRawUnsafe(sql)      
-
+            
         if(rsAlunoCurso.length > 0){
             return rsAlunoCurso
         }

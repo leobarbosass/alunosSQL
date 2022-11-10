@@ -1,130 +1,142 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// OBJETIVO: Arquivo responsável pela manipulacao de dados com o Banco de Dados(Insert, Update, Select e Delete) //
-// AUTOR: Leonardo Barbosa Santos                                                                                //
-// DATA: 31/10/2022                                                                                              //
-// VERSAO: 1.1                                                                                                   //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// OBJETIVO: ) //
+// AUTOR: Antony Gabriel                                                                                  //
+// DATA: 27/10/2022                                                                                                //
+// VERSAO: 1.0                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const { MESSAGE_ERROR, MESSAGE_SUCCESS } = require('../modulo/config.js')
+const {MESSAGE_ERROR, MESSAGE_SUCCESS} = require('../modulo/config.js')
+
+const novoCurso = async function(curso){
+
+    if(curso.nome == '' || curso.nome == undefined || curso.carga_horaria == '' || curso.carga_horaria == undefined || curso.icone == '' || curso.icone == undefined || curso.sigla == '' || curso.sigla == undefined){
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS}
+
+    //validacao para verificar email valido
+    }else{
+
+        //chamar a funcao insert criada na MODEL
+        const novoCurso = require('../model/curso.js')
+        const result = await novoCurso.insertCurso(curso)
+
+        if(result){
+            return {status: 201, message: MESSAGE_SUCCESS.INSERT_ITEM}
+        }else{
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
+        }
+
+    }
+}
+
+const atualizarCurso = async function(curso){
+
+    //Validacao do ID como campo obrigatorio
+    if(curso.id == '' || curso.id == undefined){
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
+    }else{
+        
+    }
+
+    if(curso.nome == '' || curso.nome == undefined || curso.carga_horaria == '' || curso.carga_horaria == undefined || curso.icone == '' || curso.icone == undefined || curso.sigla == '' || curso.sigla == undefined ){
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS}
+
+    //validacao para verificar email valido
+    }else{
+
+        //chamar a funcao update (atualizar) na MODEL
+        const atualizarCurso = require('../model/curso.js')
+        const result = await atualizarCurso.updateCurso(curso)
+            
+        if(result){
+            return {status: 201, message: MESSAGE_SUCCESS.UPDATE_ITEM}
+        }else{
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
+        }
+
+    }
+}
 
 
-const listarCursos = async function () {
+const listarCurso = async function(){
     let dadosCursosJSON = {}
 
-    const { selectAllCursos } = require('../model/DAO/curso.js')
+    const { selectAllCurso } = require('../model/curso.js')
 
-    const dadosCursos = await selectAllCursos()
+    const dadosCurso= await selectAllCurso()
 
-    if (dadosCursos) {
-        dadosCursosJSON.cursos = dadosCursos
+    if (dadosCurso){
+            //Conversao do tipo de dados BigInt para int ???????
+            // dadosAlunos.reverse().forEach(element => {
+              //  element.id = Number(element.id)
+            //})
+
+            //Criamos uma chave alunos no jSON para retornar o array de alunos
+            dadosCursosJSON.alunos = dadosCurso
         return dadosCursosJSON
-    } else {
+    }else{
         return false
     }
 }
 
-const novoCurso = async function (curso) {
 
-    if (curso.nome == '' || curso.nome == undefined || curso.carga_horaria == '' || curso.carga_horaria == undefined || curso.icone == '' || curso.icone == undefined || curso.sigla == '' || curso.sigla == undefined) {
+const excluirCurso = async function(id){
 
-        return { status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS }
+     //Validacao do ID como campo obrigatorio
+     if(id == '' || id == undefined){
+        return {status: 400, message: MESSAGE_ERROR.REQUIRE_ID}
+    }else{
 
-      
-    } else {
+        //Validacao para verificar se o ID existe no BD
+        const curso = await buscarCurso(id)
+        //Valida se foi encontrado um registro valido
+        if(curso){
 
-    
-        const novoCurso = require('../model/DAO/curso.js')
-        const result = await novoCurso.insertCurso(curso)
-
-        if (result) {
-            return { status: 201, message: MESSAGE_SUCCESS.INSERT_ITEM }
-        } else {
-            return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB }
+        //chamar a funcao update (atualizar) na MODEL
+        const excluirCurso = require('../model/curso')
+        const result = await excluirCurso.deleteCurso(id)
+            
+        if(result){
+            return {status: 201, message: MESSAGE_SUCCESS.DELETE_ITEM}
+        }else{
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
         }
-
-    }
-
-}
-
-const atualizarCurso = async function (curso) {
-
-    if (curso.id == '' || curso.id == undefined) {
-        return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID }
-    } else {
-
-    }
-
-    if (curso.nome == '' || curso.nome == undefined || curso.carga_horaria == '' || curso.carga_horaria == undefined || curso.icone == '' || curso.icone == undefined || curso.sigla == '' || curso.sigla == undefined) {
-
-        return { status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS }
-
-    } else {
-
-        const atualizarCurso = require('../model/DAO/curso.js')
-        const result = atualizarCurso.updateCurso(curso)
-
-        if (result) {
-            return { status: 201, message: MESSAGE_SUCCESS.UPDATE_ITEM }
-        } else {
-            return {
-                status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB
-            }
-
-        }
-    }
-}
-
-const excluirCurso = async function (id) {
-    if (id == '' || id == undefined) {
-        return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID }
-    } else {
-
-        //validacao para verificar se o id existe no banco de dados
-        const buscaByCurso = await buscarCurso(id)
-        //valida se foi encontrado um registro valido
-        if (buscaByCurso) {
-
-            //chamar a funcao update (atualizar) na MODEL
-            const deletarCurso = require('../model/DAO/curso.js')
-            const result = await deletarCurso.deleteCurso(id)
-
-            if (result) {
-                return { status: 201, message: MESSAGE_SUCCESS.DELETE_ITEM }
-            } else {
-                return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB }
-            }
         }else{
             return {status: 404, message: MESSAGE_ERROR.NOT_FOUND_DB}
         }
-
     }
-
 }
 
-const buscarCurso = async function (id) {
+const buscarCurso = async function(id){
     let dadosCursosJSON = {}
 
-    if (id == '' || id == undefined) {
-        return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID }
-    } else {
+    if(id == '' || id == undefined){
+        return {status: 400, message: MESSAGE_ERROR.REQUIRE_ID}
+    }else{
 
-        const { selectByIdCurso } = require('../model/DAO/curso.js')
+    const { selectByIdCurso } = require('../model/curso')
 
-        const dadosCursos = await selectByIdCurso(id)
+    const dadosCurso = await selectByIdCurso(id)
 
-        if (dadosCursos) {
+    if (dadosCurso){
+            //Conversao do tipo de dados BigInt para int ???????
+            // dadosAlunos.reverse().forEach(element => {
+              //  element.id = Number(element.id)
+            //})
 
-            dadosCursosJSON.alunos = dadosCursos
-
-            return dadosCursosJSON
-        } else {
-            return false
-        }
+            //Criamos uma chave alunos no jSON para retornar o array de alunos
+            dadosCursosJSON.aluno = dadosCurso
+        return dadosCursosJSON
+    }else{
+        return false
+    }
     }
 }
 
+
 module.exports = {
-    listarCursos,
+    listarCurso,
     novoCurso,
     atualizarCurso,
     excluirCurso,
